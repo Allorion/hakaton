@@ -25,8 +25,18 @@ def colorz(filename, n=3):
 
     points = get_points(img)
     clusters = kmeans(points, n, 1)
-    rgbs = [map(int, c.center.coords) for c in clusters]
-    return list(map(rtoh, rgbs))
+    rgbs = [map(int, c.center.coords) for c in clusters]  # [c.center.coords for c in clusters]
+    return list(map(rtoh, rgbs)) # rgbs #
+
+def colorzRGB(filename, n=3):
+    img = Image.open(filename)
+    img.thumbnail((200, 200))
+    w, h = img.size
+
+    points = get_points(img)
+    clusters = kmeans(points, n, 1)
+    rgbs = [c.center.coords for c in clusters]
+    return rgbs
 
 def euclidean(p1, p2):
     return sqrt(sum([
@@ -69,7 +79,3 @@ def kmeans(points, k, min_diff):
             break
 
     return clusters
-
-
-url = "c3cad65aa2fcc55f70bab3d46f3af542.jpg"
-print(colorz(url))
