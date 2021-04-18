@@ -2,7 +2,7 @@ import cv2
 from .script_color import colorzRGB
 from multiprocessing.pool import ThreadPool
 
-pool = ThreadPool(processes=7)
+pool = ThreadPool(processes=4)
 
 
 def summ(a, b):
@@ -101,15 +101,15 @@ def start():
         cv2.imwrite('img.png', img)
         async_result = pool.apply_async(colorzRGB, ('img.png',))
         rgba = async_result.get()
-        print('123')
         rgba.sort()
         avr.append(rgba)
     aver = average(avr)
 
     while (compare(rgbs)):
         ret, img = cap.read()
-        cv2.imwrite('img.png', img)
-        async_result = pool.apply_async(colorzRGB, ('img.png',))
+        cv2.imwrite('img_tg/img.png', img)
+        photo = 'img_tg/img.png'
+        async_result = pool.apply_async(colorzRGB, ('img_tg/img.png',))
         rgba = async_result.get()
         rgba.sort()
         avr.append(rgba)
@@ -118,7 +118,7 @@ def start():
         flag = True
         if not compare(rgbs):
             flag = False
-            return False
+            return False, photo
             # ctypes.windll.user32.LockWorkStation()
 
     cap.release()
